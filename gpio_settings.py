@@ -2,9 +2,9 @@
 Please note: These are GPIO numbers, not pin numbers!
 So it is actually GPIO1 - GPIO27
 """
-_ = 1
-_ = 2
-_ = 3
+RED_GPIO = 1
+GREEN_GPIO = 2
+BLUE_GPIO = 3
 _ = 4
 _ = 5
 _ = 6
