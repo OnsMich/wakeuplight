@@ -87,10 +87,10 @@ class LED(object):
         self.pwm = GPIO.PWM(self.gpio_nr, HERTZ)
 
     def turn_on(self):
-        GPIO.output(self.GPIO_nr, True)
+        GPIO.output(self.gpio_nr, True)
 
     def turn_off(self):
-        GPIO.output(self.GPIO_nr, False)
+        GPIO.output(self.gpio_nr, False)
 
     def fade_on(self, duration_sec: int = 1):
         sleeptime = duration_sec / PWM_STEPS
