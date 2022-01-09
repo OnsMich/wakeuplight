@@ -2,7 +2,10 @@ from pywebio.input import *
 from pywebio import start_server
 from pywebio.output import *
 from pywebio.session import *
-import time
+import pickle
+import os
+
+ALARM_FILE_NAME = 'alarm.pkl'
 
 
 def check_interval(input_interval):
@@ -29,15 +32,31 @@ def show_cancel_alarm_option(input_alarm: dict) -> None:
     put_scope(name='cancel_alarm')
     put_text(f"Your alarm is set to {input_alarm['wake_time']} with an interval of {input_alarm['interval_m']} minutes",
              scope='cancel_alarm')
-    put_button("Cancel Alarm", onclick=reload_page, scope='cancel_alarm')
+    put_button("Cancel Alarm", onclick=remove_set_alarm, scope='cancel_alarm')
+
+
+def remove_set_alarm():
+    os.remove(ALARM_FILE_NAME)
+    reload_page()
 
 
 def reload_page():
     run_js('window.location.reload()')
 
 
+def set_alarm(input_alarm: dict):
+    with open(ALARM_FILE_NAME, 'wb') as handle:
+        pickle.dump(input_alarm, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
 def app():
-    input_alarm = show_data_entry()
+    if os.path.exists(ALARM_FILE_NAME):
+        with open(ALARM_FILE_NAME, 'rb') as handle:
+            input_alarm = pickle.load(handle)
+    else:
+        input_alarm = show_data_entry()
+        set_alarm(input_alarm)
+
     show_cancel_alarm_option(input_alarm)
 
 
