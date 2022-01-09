@@ -1,6 +1,8 @@
 from pywebio.input import *
 from pywebio import start_server
 from pywebio.output import *
+from pywebio.session import *
+import time
 
 
 def check_interval(input_interval):
@@ -12,7 +14,6 @@ def check_interval(input_interval):
 
 
 def show_data_entry() -> dict:
-    remove(scope='cancel_alarm')
     put_scope(name='data_entry')
     put_text("Please enter desired wake-up time and the start-up interval", scope='data_entry')
     input_alarm = input_group("Set Alarm", [
@@ -23,13 +24,17 @@ def show_data_entry() -> dict:
     remove(scope='data_entry')
     return input_alarm
 
-
 def show_cancel_alarm_option(input_alarm: dict) -> None:
     put_scope(name='cancel_alarm')
     put_text(f"Your alarm is set to {input_alarm['wake_time']} with an interval of {input_alarm['interval_m']} minutes",
              scope='cancel_alarm')
-    put_button("Cancel Alarm", onclick=show_data_entry, scope='cancel_alarm')
+    put_button("Cancel Alarm", onclick=reload_page, scope='cancel_alarm')
+    while input_alarm:
+        print('hallo')
+        time.sleep(2)
 
+def reload_page():
+    run_js('window.location.reload()')
 
 def app():
     input_alarm = show_data_entry()
