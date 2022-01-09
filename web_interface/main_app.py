@@ -5,7 +5,7 @@ from pywebio.session import *
 import pickle
 import os
 
-ALARM_FILE_NAME = 'alarm.pkl'
+import settings
 
 
 def check_interval(input_interval):
@@ -36,7 +36,7 @@ def show_cancel_alarm_option(input_alarm: dict) -> None:
 
 
 def remove_set_alarm():
-    os.remove(ALARM_FILE_NAME)
+    os.remove(settings.ALARM_FILE_NAME)
     reload_page()
 
 
@@ -45,13 +45,13 @@ def reload_page():
 
 
 def set_alarm(input_alarm: dict):
-    with open(ALARM_FILE_NAME, 'wb') as handle:
+    with open(settings.ALARM_FILE_NAME, 'wb') as handle:
         pickle.dump(input_alarm, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def app():
-    if os.path.exists(ALARM_FILE_NAME):
-        with open(ALARM_FILE_NAME, 'rb') as handle:
+    if os.path.exists(settings.ALARM_FILE_NAME):
+        with open(settings.ALARM_FILE_NAME, 'rb') as handle:
             input_alarm = pickle.load(handle)
     else:
         input_alarm = show_data_entry()

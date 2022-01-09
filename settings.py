@@ -1,0 +1,2 @@
+ALARM_FILE_NAME = 'alarm.pkl'
+ALARM_CHECK_INTERVAL_S = 10
