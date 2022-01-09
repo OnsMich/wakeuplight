@@ -3,6 +3,8 @@ import pickle
 import time
 
 import settings
+from gpio_settings import RED_GPIO
+from led_lights.led import LED
 
 
 def detect_existing_alarm():
@@ -32,7 +34,11 @@ def correct_time(alarm: dict):
 
 def wake_up():
     """ Use LED-lights and possible music to wake the victim"""
-    pass
+    red_led = LED(RED_GPIO)
+    try:
+        red_led.turn_on()
+    except KeyboardInterrupt:
+        red_led.turn_off()
 
 
 if __name__ == '__main__':
