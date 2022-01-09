@@ -22,12 +22,12 @@ def check_to_wake(alarm: dict):
 
 def correct_sleep_cycle():
     """ Returns True if the movement sensors indicate that victim is in light sleep"""
-    return False
+    return True
 
 
 def correct_time(alarm: dict):
     """ Returns True if current time is in (alarm_time - interval, interval) """
-    return False
+    return True
 
 
 def wake_up():
