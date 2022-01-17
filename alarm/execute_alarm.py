@@ -14,7 +14,7 @@ def detect_existing_alarm():
     return None
 
 
-def check_to_wake(alarm: dict):
+def time_to_wake(alarm: dict):
     """ Check whether it is the right time to start the waking procedure"""
     if correct_time(alarm):
         if correct_sleep_cycle():
@@ -45,8 +45,7 @@ if __name__ == '__main__':
     while True:
         alarm = detect_existing_alarm()
         if alarm:
-            time_to_wake = check_to_wake(alarm)
-            if time_to_wake:
+            if time_to_wake(alarm):
                 wake_up()
                 os.remove(settings.ALARM_FILE_NAME)
         time.sleep(settings.ALARM_CHECK_INTERVAL_S)
