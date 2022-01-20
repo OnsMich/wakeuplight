@@ -7,6 +7,7 @@ from gpio_settings import RED_GPIO, GREEN_GPIO, BLUE_GPIO
 
 class LED(object):
     def __init__(self, gpio_nr):
+        GPIO.setmode(GPIO.BCM)
         self.gpio_nr = gpio_nr
         GPIO.setup(self.gpio_nr, GPIO.OUT)
         self.pwm = GPIO.PWM(self.gpio_nr, settings.HERTZ)
