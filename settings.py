@@ -5,3 +5,6 @@ ALARM_CHECK_INTERVAL_S = 10
 # LED settings
 HERTZ = 50
 PWM_STEPS = 50
+
+# Audio
+AUDIO_FILE = 'birds.wav'
