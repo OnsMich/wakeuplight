@@ -8,6 +8,9 @@ from gpio_settings import RED_GPIO
 from led_lights.led import LED
 import RPi.GPIO as GPIO
 
+_TEST_MODE = True
+
+
 def detect_existing_alarm():
     alarm_location = f'../{settings.ALARM_FILE_NAME}'
     if os.path.exists(alarm_location):
@@ -26,11 +29,15 @@ def time_to_wake(alarm: dict):
 
 def correct_sleep_cycle():
     """ Returns True if the movement sensors indicate that victim is in light sleep"""
+    if _TEST_MODE:
+        return True
     return True
 
 
 def correct_time(alarm: dict):
     """ Returns True if current time is in (alarm_time - interval, interval) """
+    if _TEST_MODE:
+        return True
     return True
 
 
@@ -52,5 +59,7 @@ if __name__ == '__main__':
         if alarm:
             if time_to_wake(alarm):
                 wake_up()
-                # os.remove(settings.ALARM_FILE_NAME)
+                if _TEST_MODE:
+                    break
+                os.remove(settings.ALARM_FILE_NAME)
         time.sleep(settings.ALARM_CHECK_INTERVAL_S)

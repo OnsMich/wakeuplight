@@ -10,6 +10,6 @@ class AudioPlayer:
     def play_file(self):
         pygame.mixer.music.load(self.audio_file)
         pygame.mixer.music.play()
-        print('audio')
+        print(f'playing audio at volume: {pygame.mixer.music.get_volume()} ')
         while pygame.mixer.music.get_busy():
             continue
