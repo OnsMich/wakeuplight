@@ -43,7 +43,8 @@ def time_to_wake(alarm: dict):
     """ Check whether it is the right time to start the waking procedure"""
     wake_datetime = get_wake_datetime(alarm)
     if correct_time(wake_datetime):
-        if correct_sleep_cycle():
+        wake_deadline = wake_datetime + timedelta(minutes=alarm['interval_m'])
+        if correct_sleep_cycle() or wake_deadline >= datetime.now():
             return True
     return False
 
