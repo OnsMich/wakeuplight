@@ -13,6 +13,7 @@ _TEST_MODE = True
 
 
 def detect_existing_alarm():
+    """ Check and return an existing alarm"""
     alarm_location = f'../{settings.ALARM_FILE_NAME}'
     if os.path.exists(alarm_location):
         with open(alarm_location, 'rb') as handle:
@@ -21,12 +22,14 @@ def detect_existing_alarm():
 
 
 def get_wake_time(alarm: dict):
+    """ Get the start of the wake_time, i.e. wake_time - interval_m"""
     wake_time = datetime.strptime(alarm['wake_time'], '%H:%M')
     wake_time = wake_time - timedelta(minutes=alarm['interval_m'])
     return wake_time.time()
 
 
 def get_wake_datetime(alarm: dict):
+    """ Get the start of the wake_time, i.e. wake_time - interval_m as a datetime"""
     wake_time = get_wake_time(alarm)
 
     now = datetime.now()
