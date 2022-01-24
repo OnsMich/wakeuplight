@@ -1,6 +1,7 @@
 import os
 import pickle
 import time
+from datetime import datetime, timedelta
 
 import settings
 from audio.audio_player import AudioPlayer
@@ -19,26 +20,48 @@ def detect_existing_alarm():
     return None
 
 
+def get_wake_time(alarm: dict):
+    wake_time = datetime.strptime(alarm['wake_time'], '%H:%M')
+    wake_time = wake_time - timedelta(minutes=alarm['interval_m'])
+    return wake_time.time()
+
+
+def get_wake_datetime(alarm: dict):
+    wake_time = get_wake_time(alarm)
+
+    now = datetime.now()
+    current_time = now.time()
+
+    # Set wake_date to today or tomorrow, depending on current time
+    wake_tomorrow = wake_time > current_time
+    wake_date = now.date() + wake_tomorrow * timedelta(days=1)
+
+    return datetime.combine(wake_date, wake_time)
+
+
 def time_to_wake(alarm: dict):
     """ Check whether it is the right time to start the waking procedure"""
-    if correct_time(alarm):
+    wake_datetime = get_wake_datetime(alarm)
+    if correct_time(wake_datetime):
         if correct_sleep_cycle():
             return True
     return False
 
 
-def correct_sleep_cycle():
+def correct_sleep_cycle() -> bool:
     """ Returns True if the movement sensors indicate that victim is in light sleep"""
     if _TEST_MODE:
         return True
     return True
 
 
-def correct_time(alarm: dict):
+def correct_time(wake_datetime: datetime) -> bool:
     """ Returns True if current time is in (alarm_time - interval, interval) """
     if _TEST_MODE:
         return True
-    return True
+    if wake_datetime > datetime.now():
+        return True
+    return False
 
 
 def wake_up():
